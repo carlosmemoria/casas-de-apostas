@@ -5,19 +5,40 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Busca de Casas de Apostas Regulamentadas</title>
     <style>
-        html { height: 100%; }
+        html {
+            height: 100%;
+        }
         body { 
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; 
-            background-color: #f4f4f9; 
             color: #333; 
             margin: 0; 
             padding: 2rem; 
+            
+            /* --- ESTILOS DO BACKGROUND --- */
+            background-image: url("{{ url_for('static', filename='img/background.png') }}");
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+
+            /* --- CÓDIGO PARA CENTRALIZAÇÃO --- */
+            /* Define a altura mínima como 100% da tela */
+            min-height: 100vh; 
+            /* Usa Flexbox para controlar o alinhamento */
+            display: flex;
+            /* Centraliza verticalmente */
+            justify-content: center;
+            /* Centraliza horizontalmente */
+            align-items: center; 
+            /* Garante que o padding não cause um scroll indesejado */
+            box-sizing: border-box;
         }
+        
         .container { 
             width: 100%; 
             max-width: 800px; 
-            margin: auto; 
-            background: white; 
+            /* A margem agora pode ser 0, pois o flexbox já está centralizando */
+            margin: 0;
+            background: rgba(255, 255, 255, 0.95);
             padding: 2rem; 
             border-radius: 8px; 
             box-shadow: 0 4px 12px rgba(0,0,0,0.1); 
@@ -32,14 +53,10 @@
         table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
         th, td { padding: 0.8rem; text-align: left; border-bottom: 1px solid #ddd; }
         th { background-color: #f0f0f0; }
-        tr:hover { background-color: #f9f9f9; }
-        
+        tr:hover { background-color: #f0f0f0; }
         .status-Autorizada { color: #28a745; font-weight: bold; }
         .status-DecisãoJudicial { color: #fd7e14; font-weight: bold; }
-        
-        /* --- NOVO: Estilo para o domínio pendente --- */
-        .status-pendente { color: #dc3545; font-weight: bold; } /* Vermelho */
-
+        .status-pendente { color: #dc3545; font-weight: bold; }
         .no-results { text-align: center; color: #888; margin-top: 2rem; font-size: 1.1rem; }
         a { color: #0056b3; text-decoration: none; }
         a:hover { text-decoration: underline; }
