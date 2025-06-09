@@ -3,68 +3,133 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Busca de Casas de Apostas Regulamentadas</title>
+    <title>Casas de Apostas Regulamentadas</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bitter:wght@400&display=swap" rel="stylesheet">
+
     <style>
+        /* ================================================= */
+        /* --- ESTILOS FLUIDOS E RESPONSIVOS (BASE) --- */
+        /* ================================================= */
         html {
             height: 100%;
         }
+        
         body { 
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; 
             color: #333; 
             margin: 0; 
-            padding: 2rem; 
-            
-            /* --- ESTILOS DO BACKGROUND --- */
-            background-image: url("{{ url_for('static', filename='img/background.png') }}");
+            padding: 1rem;
+            box-sizing: border-box;
+            overflow-x: hidden; /* ADICIONADO: Remove a barra de rolagem horizontal da página */
+
+            /* --- OTIMIZAÇÃO DE BACKGROUND --- */
+            background-color: #2e6364; 
+            background-image: url("{{ url_for('static', filename='img/background.webp') }}");
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
 
-            /* --- CÓDIGO PARA CENTRALIZAÇÃO --- */
-            /* Define a altura mínima como 100% da tela */
+            /* --- CENTRALIZAÇÃO COM FLEXBOX --- */
             min-height: 100vh; 
-            /* Usa Flexbox para controlar o alinhamento */
             display: flex;
-            /* Centraliza verticalmente */
             justify-content: center;
-            /* Centraliza horizontalmente */
             align-items: center; 
-            /* Garante que o padding não cause um scroll indesejado */
-            box-sizing: border-box;
         }
         
         .container { 
             width: 100%; 
             max-width: 800px; 
-            /* A margem agora pode ser 0, pois o flexbox já está centralizando */
-            margin: 0;
+            margin: 2rem 0;
             background: rgba(255, 255, 255, 0.95);
-            padding: 2rem; 
+            padding: 2rem 1.5rem; 
             border-radius: 8px; 
             box-shadow: 0 4px 12px rgba(0,0,0,0.1); 
         }
-        h1 { color: #003366; text-align: center; font-size: 1.8rem; }
-        .search-box { display: flex; width: 100%; margin: 2rem 0; }
-        .search-box input[type="text"] { flex-grow: 1; padding: 0.8rem; font-size: 1rem; border: 2px solid #ddd; border-radius: 4px 0 0 4px; }
-        .search-box input[type="text"]:focus { border-color: #0056b3; outline: none; }
+        
+        /* SEU EFEITO DE TÍTULO, AGORA FLUIDO */
+        #titulo-busca {
+            transform: skewY(-2deg);
+            position: relative;
+            text-align: center;
+        }
+        
+        .divider {
+            width: 40%;
+            max-width: 200px;
+            height: 6px;
+            margin: 1rem auto;
+            background-color: #2e6364;
+        }
+
+        .vintage-text {
+            margin: 0;
+            font-family: 'Bitter', serif;
+            line-height: 1.1;
+        }
+        
+        .smaller {
+            font-size: clamp(28px, 7vw, 60px);
+            color: #2e6364;
+            letter-spacing: 0.05em;
+            text-shadow: 0.008em 0.008em #f1f4d8, 0.017em 0.017em #f1f4d8, 0.033em 0.033em #f1f4d8, 0.042em 0.042em #822d2f, 0.05em 0.05em #822d2f, 0.058em 0.058em #822d2f, 0.067em 0.067em #822d2f, 0.075em 0.075em #822d2f, 0.083em 0.083em #822d2f, 0.092em 0.092em #822d2f, 0.1em 0.1em #822d2f, 0.108em 0.108em #822d2f, 0.117em 0.117em #822d2f, 0.125em 0.125em #822d2f;
+        }
+
+        .bigger {
+            font-size: clamp(40px, 10vw, 80px);
+            color: #8d212b;
+            letter-spacing: 0.05em;
+            display: block;
+            text-shadow: 0.006em 0.006em #f1f4d8, 0.013em 0.013em #f1f4d8, 0.025em 0.025em #f1f4d8, 0.031em 0.031em #f1f4d8, 0.038em 0.038em #e57c31, 0.044em 0.044em #e57c31, 0.05em 0.05em #e57c31, 0.056em 0.056em #e57c31, 0.063em 0.063em #e57c31, 0.069em 0.069em #e57c31, 0.075em 0.075em #e57c31, 0.081em 0.081em #e57c31, 0.088em 0.088em #e57c31, 0.094em 0.094em #e57c31, 0.1em 0.1em #e57c31;
+        }
+        
+        .search-box { display: flex; width: 100%; margin: 2.5rem 0; }
+        .search-box input[type="text"] { flex-grow: 1; padding: 0.8rem; font-size: 1rem; border: 2px solid #ddd; border-radius: 4px 0 0 4px; min-width: 0; }
         .search-box button { padding: 0.8rem 1.5rem; font-size: 1rem; background-color: #0056b3; color: white; border: none; cursor: pointer; border-radius: 0 4px 4px 0; }
-        .search-box button:hover { background-color: #003366; }
-        .results-info { text-align: center; margin-bottom: 1rem; color: #555; }
+        
+        .results-info { text-align: center; margin-top: 2rem; margin-bottom: 1rem; color: #555; }
+        
+        .table-wrapper { overflow-x: auto; } 
         table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
-        th, td { padding: 0.8rem; text-align: left; border-bottom: 1px solid #ddd; }
+        th, td { padding: 0.8rem; text-align: left; border-bottom: 1px solid #ddd; white-space: nowrap; }
         th { background-color: #f0f0f0; }
-        tr:hover { background-color: #f0f0f0; }
+
         .status-Autorizada { color: #28a745; font-weight: bold; }
         .status-DecisãoJudicial { color: #fd7e14; font-weight: bold; }
         .status-pendente { color: #dc3545; font-weight: bold; }
-        .no-results { text-align: center; color: #888; margin-top: 2rem; font-size: 1.1rem; }
-        a { color: #0056b3; text-decoration: none; }
-        a:hover { text-decoration: underline; }
+
+        /* --- AJUSTES ESTRUTURAIS PARA CELULAR --- */
+        @media (max-width: 600px) {
+            .search-box {
+                flex-direction: column;
+            }
+            .search-box input[type="text"] {
+                border-radius: 4px;
+                text-align: center;
+            }
+            .search-box button {
+                margin-top: 0.5rem;
+                border-radius: 4px;
+            }
+
+            /* ADICIONADO: Reduz a fonte e o espaçamento da tabela no celular */
+            th, td {
+                font-size: 0.875rem; /* Equivale a 14px, um bom tamanho para tabelas */
+                padding: 0.6rem 0.5rem; /* Diminui o espaçamento interno */
+            }
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>🔍 Busca de Casas de Apostas</h1>
+        <div id="titulo-busca">
+            <h1 class="vintage-text">
+                <span class="smaller">🔍 Casas de Apostas</span>
+                <span class="bigger">Autorizadas</span>
+            </h1>
+            <div class="divider"></div>
+        </div>
         <p class="results-info">Fonte: Ministério da Fazenda. Total de <strong>{{ total }}</strong> domínios na base de dados.</p>
 
         <form method="GET" action="/">
@@ -76,34 +141,36 @@
 
         {% if query %}
             {% if resultados %}
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Nome da Empresa</th>
-                            <th>Marca</th>
-                            <th>Domínio</th>
-                            <th>Status</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for r in resultados %}
-                        <tr>
-                            <td>{{ r.nome }}</td>
-                            <td>{{ r.marca }}</td>
-                            <td>
-                                {% if r.site == 'não registrado' %}
-                                    <span class="status-pendente">{{ r.site }}</span>
-                                {% else %}
-                                    <a href="https://{{ r.site }}" target="_blank">{{ r.site }}</a>
-                                {% endif %}
-                            </td>
-                            <td>
-                                <span class="status-{{ r.status.replace(' ', '') }}">{{ r.status }}</span>
-                            </td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Nome da Empresa</th>
+                                <th>Marca</th>
+                                <th>Domínio</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for r in resultados %}
+                            <tr>
+                                <td>{{ r.nome }}</td>
+                                <td>{{ r.marca }}</td>
+                                <td>
+                                    {% if r.site == 'não registrado' %}
+                                        <span class="status-pendente">{{ r.site }}</span>
+                                    {% else %}
+                                        <a href="https://{{ r.site }}" target="_blank">{{ r.site }}</a>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <span class="status-{{ r.status.replace(' ', '') }}">{{ r.status }}</span>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
             {% else %}
                 <p class="no-results">Nenhum resultado encontrado para "<strong>{{ query }}</strong>".</p>
             {% endif %}
